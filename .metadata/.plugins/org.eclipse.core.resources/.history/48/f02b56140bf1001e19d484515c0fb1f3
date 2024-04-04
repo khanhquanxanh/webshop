@@ -1,0 +1,63 @@
+package com.Java.Guides.khanhquanxanh.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.Java.Guides.khanhquanxanh.model.ApplicationUser;
+import com.Java.Guides.khanhquanxanh.model.JwtResponse;
+import com.Java.Guides.khanhquanxanh.model.LoginResponseDTO;
+import com.Java.Guides.khanhquanxanh.model.RegistrationDTO;
+import com.Java.Guides.khanhquanxanh.service.AuthenticationService;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+
+
+@RequestMapping("/auth")
+@Controller
+
+
+public class AuthenticationController {
+	
+	@Autowired
+	private AuthenticationService authenticationService;
+	@Autowired
+	HttpServletResponse response;
+	
+	@PostMapping("/register")
+	public String registerUser(ApplicationUser account) {
+		authenticationService.RegisterUser(account);
+		return "redirect:/signUp.html";
+	}
+//	@PostMapping("/login")
+//    public LoginResponseDTO loginUser(@RequestBody RegistrationDTO body){
+//        return authenticationService.loginUser(body.getUsername(), body.getPassword());
+//    }
+//	@PostMapping("/login")
+//    public LoginResponseDTO loginUser(@RequestParam("username") String username, @RequestParam("password") String password){
+//        
+//		System.out.println("bat dau xac thuc");
+//		return authenticationService.loginUser(username, password);
+//    }
+	@PostMapping("/login")
+    public String loginUser(@RequestParam("username") String username, @RequestParam("password") String password){
+        
+		System.out.println("bat dau xac thuc");
+		LoginResponseDTO value = authenticationService.loginUser(username, password);
+		String token = value.getJwt();
+		// Tạo cookie JWT và gửi về máy khách
+	    Cookie cookie = new Cookie("jwtToken", token);
+	    cookie.setHttpOnly(true);
+	    response.addCookie(cookie);
+	    
+	    // Trả về phản hồi
+	    return "redirect:/home";
+//		return ResponseEntity.ok(new JwtResponse(token));
+    }
+}

@@ -1,0 +1,5 @@
+package com.Java.Guides.khanhquanxanh.config;
+
+public class WebMvcConfig {
+
+}

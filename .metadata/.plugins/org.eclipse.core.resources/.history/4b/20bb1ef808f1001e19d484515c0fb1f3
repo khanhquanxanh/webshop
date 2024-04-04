@@ -1,0 +1,32 @@
+package com.Java.Guides.khanhquanxanh.Interceptor;
+
+@Component
+public class JwtTokenInterceptor implements HandlerInterceptor {
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // Lấy JWT từ nơi bạn lưu trữ nó (ví dụ: cookie, local storage, ...)
+        String jwt = ...; // lấy JWT từ request
+
+        // Nếu JWT tồn tại, thêm nó vào header của yêu cầu
+        if (jwt != null) {
+            String tokenWithBearerPrefix = "Bearer " + jwt;
+            response.addHeader("Authorization", tokenWithBearerPrefix);
+        }
+
+        return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        // Not implemented
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        // Not implemented
+    }
+}

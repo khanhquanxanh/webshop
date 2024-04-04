@@ -1,0 +1,33 @@
+function getJwtFromCookies() {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        const [name, value] = cookie.trim().split('=');
+        if (name === 'jwtToken') {
+            return value;
+        }
+    }
+    return null;
+}
+
+// Gửi yêu cầu với token trong tiêu đề Authorization khi click vào đường link "about.html"
+document.getElementById('about-link').addEventListener('click', function(event) {
+    event.preventDefault(); // Ngăn chặn hành động mặc định của đường link
+
+    const token = getJwtFromCookies();
+    if (token) {
+        fetch('your_api_endpoint_here', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            // Xử lý phản hồi
+        })
+        .catch(error => {
+            // Xử lý lỗi
+        });
+    } else {
+        // Xử lý khi không có token trong cookies
+    }
+});

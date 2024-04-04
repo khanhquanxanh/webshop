@@ -1,0 +1,32 @@
+function sendRequest(event) {
+    event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ a
+
+    // Lấy token JWT từ cookies
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)jwtToken\s*=\s*([^;]*).*$)|^.*$/, "$1");
+
+    // Thiết lập tiêu đề yêu cầu
+    const headers = {
+        'Authorization': `Bearer ${token}`
+    };
+
+    // Lấy URL từ thuộc tính href của thẻ a
+    const url = event.target.getAttribute('href');
+
+    // Thực hiện yêu cầu GET bằng XMLHttpRequest
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    // Thêm tiêu đề Authorization vào yêu cầu
+    for (let header in headers) {
+        xhr.setRequestHeader(header, headers[header]);
+    }
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            console.log(xhr.responseText);
+            // Xử lý phản hồi ở đây nếu cần
+        }
+    };
+
+    xhr.send();
+}

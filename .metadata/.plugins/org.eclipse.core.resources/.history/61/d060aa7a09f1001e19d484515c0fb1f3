@@ -1,0 +1,13 @@
+package com.Java.Guides.khanhquanxanh.config;
+
+@Configuration
+public class WebMvcConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private JwtTokenInterceptor jwtTokenInterceptor;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(jwtTokenInterceptor).addPathPatterns("/about.html");
+    }
+}

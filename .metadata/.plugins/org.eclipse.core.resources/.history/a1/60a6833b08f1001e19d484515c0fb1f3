@@ -1,0 +1,5 @@
+package com.Java.Guides.khanhquanxanh.Interceptor;
+
+public class JwtTokenInterceptor {
+
+}
